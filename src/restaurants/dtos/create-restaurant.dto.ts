@@ -1,12 +1,31 @@
-import { Field, ArgsType, InputType, OmitType } from '@nestjs/graphql';
+import {
+  Field,
+  ArgsType,
+  InputType,
+  OmitType,
+  ObjectType,
+  PickType,
+  Int,
+} from '@nestjs/graphql';
 import { Restaurant } from '../entities/restaurant.entity';
+import { CreateAccountOutput } from 'src/users/dtos/create-account.dto';
 
 @InputType()
-export class CreateRestaurantDto extends OmitType(Restaurant, [
-  'id',
-  //   'ownerName',
-  //   'categoryName',
-]) {}
+export class CreateRestaurantInput extends PickType(Restaurant, [
+  'name',
+  'bgImg',
+  'adress',
+]) {
+  @Field(() => String)
+  categoryName: string;
+}
+
+@ObjectType()
+export class CreateRestaurantOutput extends CreateAccountOutput {
+  @Field(() => Int, { nullable: true })
+  restaId?: number;
+}
+
 // also we can use InputType as third argument instead use decorator -
 //  @InputType({isAbstract: true}) in entity file
 
